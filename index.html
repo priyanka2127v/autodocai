@@ -2,140 +2,32 @@
 <html>
 <head>
     <title>AutoDoc AI</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background: #eef2f7;
-            margin: 0;
-            padding: 0;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 60px auto;
-            background: #ffffff;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-        }
-
-        h1 {
-            margin-bottom: 10px;
-            color: #333;
-        }
-
-        p {
-            color: #666;
-            margin-bottom: 20px;
-        }
-
-        textarea {
-            width: 100%;
-            height: 180px;
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px solid #ccc;
-            font-family: monospace;
-            font-size: 14px;
-            resize: none;
-        }
-
-        .btn-group {
-            margin-top: 15px;
-        }
-
-        button {
-            padding: 10px 18px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 14px;
-            margin-right: 10px;
-        }
-
-        .analyze-btn {
-            background: #2563eb;
-            color: white;
-        }
-
-        .analyze-btn:hover {
-            background: #1e4ed8;
-        }
-
-        .download-btn {
-            background: #10b981;
-            color: white;
-        }
-
-        .download-btn:hover {
-            background: #059669;
-        }
-
-        .output-box {
-            margin-top: 20px;
-            background: #1e293b;
-            color: #e2e8f0;
-            padding: 15px;
-            border-radius: 8px;
-            font-size: 14px;
-            overflow-x: auto;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<div class="container">
+<header>
     <h1>AutoDoc AI</h1>
-    <p>Automatically generate documentation from your Python code</p>
+    <p>AI-powered Code Documentation Generator</p>
+</header>
 
-    <textarea id="code" placeholder="Paste your Python code here..."></textarea>
+<div class="container">
 
-    <div class="btn-group">
-        <button class="analyze-btn" onclick="sendData()">Analyze</button>
-        <button class="download-btn" onclick="downloadDoc()">Download</button>
+    <textarea id="code" placeholder="Paste your code here..."></textarea>
+
+    <div class="buttons">
+        <button onclick="analyze()">Analyze</button>
+        <button onclick="download()">Download</button>
     </div>
 
-    <div class="output-box" id="result">
+    <div class="output" id="result">
         Output will appear here...
     </div>
+
 </div>
 
-<script>
-let latestResult = "";
-
-async function sendData() {
-    let code = document.getElementById("code").value;
-
-    try {
-        let res = await fetch("http://127.0.0.1:8000/analyze", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ code: code })
-        });
-
-        let data = await res.json();
-
-        latestResult = "AutoDoc AI Documentation\n\nFunctions:\n" + (data.functions || []).join("\n");
-
-        document.getElementById("result").innerText = latestResult;
-
-    } catch (error) {
-        document.getElementById("result").innerText = "Error: " + error;
-    }
-}
-
-function downloadDoc() {
-    let blob = new Blob([latestResult], { type: "text/plain" });
-
-    let a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
-    a.download = "documentation.txt";
-    a.click();
-}
-</script>
+<script src="script.js"></script>
 
 </body>
 </html>
