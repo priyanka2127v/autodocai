@@ -4,7 +4,7 @@ async function analyze() {
     let code = document.getElementById("code").value;
 
     try {
-        let res = await fetch("http://127.0.0.1:8000/analyze", {
+        let res = await fetch("http://127.0.0.1:8001/analyze", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -19,10 +19,9 @@ async function analyze() {
             return;
         }
 
-        latestResult = "AutoDoc AI Documentation\n\nFunctions:\n"
-            + (data.functions || []).join("\n")
-            + "\n\nExplanation:\n"
-            + (data.explanation || "No explanation");
+        latestResult = "AutoDoc AI Documentation\n\n" +
+            "Functions:\n" + (data.functions || []).join("\n") +
+            "\n\nExplanation:\n" + (data.explanation || "No explanation available");
 
         document.getElementById("result").innerText = latestResult;
 

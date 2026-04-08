@@ -21,22 +21,35 @@ def home():
     return {"message": "AutoDoc AI Running 🚀"}
 
 @app.post("/analyze")
-def analyze(code_input: CodeInput):
-    try:
-        tree = ast.parse(code_input.code)
+def analyze(input: CodeInput):
+    code = input.code
 
+    # 🔹 Extract functions (Python)
+    functions = []
+    try:
+        tree = ast.parse(code)
         functions = [
             node.name for node in ast.walk(tree)
             if isinstance(node, ast.FunctionDef)
         ]
+    except:
+        return {"error": "Invalid Python code"}
 
-        explanation = f"Found {len(functions)} function(s) in your code."
+    # 🔹 Simple explanation logic (NO API needed 🔥)
+    explanation = "This code contains the following functions:\n"
 
-        return {"functions": functions, "explanation": explanation}
-    except SyntaxError as e:
-        return {"error": f"Syntax Error: {str(e)}", "functions": [], "explanation": ""}
+    for func in functions:
+        explanation += f"- {func}(): This function performs a specific operation.\n"
+
+    if not functions:
+        explanation = "No functions found in the given code."
+
+    return {
+        "functions": functions,
+        "explanation": explanation
+    }
 
 if __name__ == "__main__":
     import uvicorn
 
-    uvicorn.run(app, host="127.0.0.1", port=8000)
+    uvicorn.run(app, host="127.0.0.1", port=8001)
