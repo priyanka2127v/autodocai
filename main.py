@@ -5,7 +5,6 @@ import ast
 
 app = FastAPI()
 
-# 🔥 VERY IMPORTANT (for frontend to connect)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -23,14 +22,19 @@ def home():
 
 @app.post("/analyze")
 def analyze(code_input: CodeInput):
-    tree = ast.parse(code_input.code)
+    try:
+        tree = ast.parse(code_input.code)
 
-    functions = [
-        node.name for node in ast.walk(tree)
-        if isinstance(node, ast.FunctionDef)
-    ]
+        functions = [
+            node.name for node in ast.walk(tree)
+            if isinstance(node, ast.FunctionDef)
+        ]
 
-    return {"functions": functions}
+        explanation = f"Found {len(functions)} function(s) in your code."
+
+        return {"functions": functions, "explanation": explanation}
+    except SyntaxError as e:
+        return {"error": f"Syntax Error: {str(e)}", "functions": [], "explanation": ""}
 
 if __name__ == "__main__":
     import uvicorn
