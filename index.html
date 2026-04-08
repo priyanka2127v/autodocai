@@ -2,9 +2,7 @@
 <html>
 <head>
     <title>AutoDoc AI</title>
-    <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
 <header>
@@ -13,18 +11,14 @@
 </header>
 
 <div class="container">
-
-    <textarea id="code" placeholder="Paste your code here..."></textarea>
+    <textarea id="code" rows="10" cols="70" placeholder="Paste your code here..."></textarea>
 
     <div class="buttons">
         <button onclick="analyze()">Analyze</button>
         <button onclick="download()">Download</button>
     </div>
 
-    <div class="output" id="result">
-        Output will appear here...
-    </div>
-
+    <div class="output" id="result">Output will appear here...</div>
 </div>
 
 <script src="script.js"></script>

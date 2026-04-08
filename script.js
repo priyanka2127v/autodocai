@@ -16,17 +16,20 @@ async function analyze() {
 
         if (data.error) {
             document.getElementById("result").innerText = "Error: " + data.error;
+            latestResult = "";
             return;
         }
 
-        latestResult = "AutoDoc AI Documentation\n\n" +
-            "Functions:\n" + (data.functions || []).join("\n") +
-            "\n\nExplanation:\n" + (data.explanation || "No explanation available");
+        latestResult = "AutoDoc AI Explanation\n\n" +
+            (data.explanation || "No explanation available") +
+            "\n\nGenerated Documentation\n\n" +
+            (data.documentation || "No documentation available");
 
         document.getElementById("result").innerText = latestResult;
 
     } catch (error) {
         document.getElementById("result").innerText = "Error: " + error.message;
+        latestResult = "";
     }
 }
 
